@@ -6,6 +6,7 @@ import Header from './components/Header';
 import AddTodo from './components/AddTodo';
 
 
+
 const App = () => {
   const [tasks, setTasks] = useState([])
   useEffect(()=>{
@@ -15,19 +16,19 @@ const App = () => {
      
       })
   },[])
-const addTask = newTask=>{
-  setTasks([...tasks, newTask])
+const deleteTodo=(_id)=>{
+  setTasks(tasks.filter(el=> el.id !==_id))
 }
   return (
     <div className=''>
     <Header/>
-    <AddTodo addTask={addTask}/>
+    <AddTodo />
      <ul className='list-group'>
        {
          tasks.map(item=>
            <li className='list-group-item col-md-4 offset-md-4 d-flex justify-content-between align-items-center'>{item.title}
            <div>
-           <button className='btn btn-primary btn-sm mr-2'>
+           <button className='btn btn-primary btn-sm mr-2' onClick={()=>deleteTodo(item._id)}>
              <FontAwesomeIcon icon={faTrash}/>
            </button>
            <button className='btn btn-danger btn-sm'>

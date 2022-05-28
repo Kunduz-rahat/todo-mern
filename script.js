@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const chalk = require('chalk')
 const cors = require('cors')
 const path = require('path')
+const morgan = require('morgan')
 require("dotenv").config()
 const tasksRouter = require('./routes/tasksRouter')
 const Tasks = require('./models/taskModel')
@@ -13,6 +14,7 @@ const Tasks = require('./models/taskModel')
 const server = express()
 server.use(express.json())  /// мидlвейр чтобы использовать боди
 server.use(cors())
+server.use(morgan())
 
 
 mongoose.connect(process.env.MONGO_URL).then(()=>console.log(chalk.blue('DB is connected')))

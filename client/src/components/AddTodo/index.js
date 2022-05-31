@@ -9,6 +9,7 @@ const AddTodo = (props) => {
     try {
       const res = await axios.post('http://localhost:8000/api/tasks', { title: task })
       console.log(res)
+		setTask('')
     } catch (err) {
       console.log(err)
     }

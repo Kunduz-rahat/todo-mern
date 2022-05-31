@@ -38,12 +38,18 @@ const addTask = async (reg, res) => {
 }
 
 const deletedTask = async (req, res) => {
-  const updatedTask = await Tasks.findOneAndUpdate(
-    {_id: req.params.id},
-    {_isDeleted: true, _deletedAt: +new Date()},
-    {new: true})
+  // const updatedTask = await Tasks.findByIdAndDelete(
+  //   {_id: req.params.id},
+  //   // {_isDeleted: true, _deletedAt: +new Date()},
+  //   {new: true})
 
-  res.json(updatedTask)
+  // res.json(updatedTask)
+  try{
+    const deletedItem = await Tasks.findByIdAndDelete(req.params.id)
+    res.status(200).json('item deleted')
+  }catch(err){
+    res.json(err)
+  }
 }
 
 

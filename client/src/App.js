@@ -13,7 +13,8 @@ const App = () => {
     axios('http://localhost:8000/api/tasks')
       .then(({ data }) => {
         setTasks(data)
-
+      // setTasks(prev=>[...prev, data])
+        
       })
   }, [])
 

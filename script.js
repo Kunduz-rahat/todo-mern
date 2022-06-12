@@ -13,7 +13,7 @@ const Tasks = require('./models/taskModel')
 
 const server = express()
 server.use(express.json())  /// мидlвейр чтобы использовать боди
-server.use(cors())
+server.use(cors()) 
 server.use(morgan())
 
 

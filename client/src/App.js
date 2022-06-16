@@ -12,6 +12,7 @@ const App = () => {
   const [task, setTask] = useState('')
   const [isUpdate, setIsUpdate] = useState('')
   const [updateItemTask, setUpdateItemTask] = useState('')
+  const [edit, setEdit] = useState(true)
 
   useEffect(() => {
     const getListItems = async () => {
@@ -48,32 +49,34 @@ const App = () => {
     }
   }
 
-  const updateForm = () => {
+  // const updateForm = () => {
 
-    <form onSubmit={(e) => { updateItem(e) }}>
-      <input type="text"
-        placeholder='New Todo' onChange={e => { setUpdateItemTask(e.target.value) }}
-        value={updateItemTask}
-      />
-      <div>
-        <button type='submit'
-          className="btn btn-primary">
-          Update
-        </button>
-      </div>
-    </form>
-  }
-  const updateItem = async (e) => {
-    e.preventDefault()
-    try {
-      const res = await axios.put(`http://localhost:8000/api/tasks/${isUpdate}`, { title: updateItemTask })
-      setUpdateItemTask('')
-      setIsUpdate('')
-      console.log(res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  //   <form onSubmit={(e) => { updateItem(e) }}>
+  //     <input type="text"
+  //       placeholder='New Todo' onChange={e => { setUpdateItemTask(e.target.value) }}
+  //       value={updateItemTask}
+
+  //     />
+  //     <div>
+  //       <button type='submit'
+  //         className="btn btn-primary">
+  //         Update
+  //       </button>
+  //     </div>
+  //   </form>
+  //   console.log('updage')
+  // }
+  // const updateItem = async (e) => {
+  //   e.preventDefault()
+  //   try {
+  //     const res = await axios.put(`http://localhost:8000/api/tasks/${isUpdate}`, { title: updateItemTask })
+  //     setUpdateItemTask('')
+  //     setIsUpdate('')
+  //     console.log(res.data)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
   return (
     <div className=''>
       <Header />
@@ -95,28 +98,20 @@ const App = () => {
       <ul className='list-group'>
         {
           tasks.map(item =>
-            <div key={item.id}>
-              <li className='list-group-item col-md-4 offset-md-4 d-flex justify-content-between align-items-center'>{item.title}
-                {
-                  isUpdate === item.id
-                    ? updateForm()
-                    :
-                    <>
-
-                      <div >
-                        <button className='btn btn-danger btn-sm mr-2' onClick={() => { setIsUpdate(item.id) }}>
-                          <FontAwesomeIcon icon={faEdit} />
-                        </button>
-                        <button className='btn btn-primary btn-sm ' onClick={() => { deleteTodo(item.id) }}>
-                          <FontAwesomeIcon icon={faTrash} />
-                        </button>
-                      </div>
-
-                    </>
-
-                }
-              </li>
-            </div>
+            <li key={item.id} className='list-group-item col-md-4 offset-md-4 d-flex justify-content-between align-items-center'>
+            {
+              edit? <input type='text'/> : <span>  {item.title}</span>
+            }
+          
+              <div>
+                <button className='btn btn-danger btn-sm mr-2'>
+                  <FontAwesomeIcon icon={faEdit} />
+                </button>
+                <button className='btn btn-primary btn-sm ' onClick={() => { deleteTodo(item.id) }}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
+            </li>
           )
         }
       </ul>

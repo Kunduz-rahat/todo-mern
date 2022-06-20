@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
+
 import Header from './components/Header';
+import TodoItem from './components/TodoItem';
 
 
 
@@ -12,7 +12,7 @@ const App = () => {
   const [task, setTask] = useState('')
   const [isUpdate, setIsUpdate] = useState('')
   const [updateItemTask, setUpdateItemTask] = useState('')
-  const [edit, setEdit] = useState(true)
+  
 
   useEffect(() => {
     const getListItems = async () => {
@@ -98,20 +98,7 @@ const App = () => {
       <ul className='list-group'>
         {
           tasks.map(item =>
-            <li key={item.id} className='list-group-item col-md-4 offset-md-4 d-flex justify-content-between align-items-center'>
-            {
-              edit? <input type='text'/> : <span>  {item.title}</span>
-            }
-          
-              <div>
-                <button className='btn btn-danger btn-sm mr-2'>
-                  <FontAwesomeIcon icon={faEdit} />
-                </button>
-                <button className='btn btn-primary btn-sm ' onClick={() => { deleteTodo(item.id) }}>
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </div>
-            </li>
+           <TodoItem deleteTodo={deleteTodo}  item={item} />
           )
         }
       </ul>

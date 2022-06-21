@@ -10,20 +10,10 @@ import TodoItem from './components/TodoItem';
 const App = () => {
   const [tasks, setTasks] = useState([])
   const [task, setTask] = useState('')
-  const [isUpdate, setIsUpdate] = useState('')
-  const [updateItemTask, setUpdateItemTask] = useState('')
-  
-
   useEffect(() => {
-    const getListItems = async () => {
-      try {
-        const res = await axios('http://localhost:8000/api/tasks')
-        setTasks(res.data)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    getListItems()
+    axios('http://localhost:8000/api/tasks')
+      .then(({ data }) => setTasks(data))
+
   }, [])
 
   const addTask = async (e) => {
@@ -38,45 +28,15 @@ const App = () => {
       console.log(err)
     }
   }
-  const deleteTodo = async (id) => {
-    try {
-      const res = await axios.delete(`http://localhost:8000/api/tasks/${id}`)
-      const newTasks = tasks.filter(item => item._id !== id)
-      setTasks(newTasks)
-      console.log(res.data)
-    } catch (err) {
-      console.log(err)
-    }
+  const deleteTodo = (id) => {
+    axios.delete(`http://localhost:8000/api/tasks/${id}`)
+      .then(() => setTasks(tasks.filter(item => item._id !== id)))
   }
-
-  // const updateForm = () => {
-
-  //   <form onSubmit={(e) => { updateItem(e) }}>
-  //     <input type="text"
-  //       placeholder='New Todo' onChange={e => { setUpdateItemTask(e.target.value) }}
-  //       value={updateItemTask}
-
-  //     />
-  //     <div>
-  //       <button type='submit'
-  //         className="btn btn-primary">
-  //         Update
-  //       </button>
-  //     </div>
-  //   </form>
-  //   console.log('updage')
-  // }
-  // const updateItem = async (e) => {
-  //   e.preventDefault()
-  //   try {
-  //     const res = await axios.put(`http://localhost:8000/api/tasks/${isUpdate}`, { title: updateItemTask })
-  //     setUpdateItemTask('')
-  //     setIsUpdate('')
-  //     console.log(res.data)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
+  const updateTodo = (modified, id) => {
+    axios.put(`http://localhost:8000/api/tasks/${id}`, { title: modified })
+      .then(({ data }) => setTasks(tasks.map(el => el.id === id ? data : el))
+      )
+  }
   return (
     <div className=''>
       <Header />
@@ -98,7 +58,7 @@ const App = () => {
       <ul className='list-group'>
         {
           tasks.map(item =>
-           <TodoItem deleteTodo={deleteTodo}  item={item} />
+            <TodoItem key={item.id} deleteTodo={deleteTodo} item={item} updateTodo={updateTodo} />
           )
         }
       </ul>

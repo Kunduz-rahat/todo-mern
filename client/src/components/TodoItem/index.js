@@ -2,17 +2,25 @@ import React, {useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrash, faSave } from '@fortawesome/free-solid-svg-icons'
 
-const TodoItem = ({item, deleteTodo}) => {
+const TodoItem = ({item, deleteTodo, updateTodo}) => {
   const [edit, setEdit] = useState(false)
+  const [modified, setModified]= useState(item.title)
+  const handleSave = ()=>{
+    updateTodo(modified, item.id)
+    setEdit(false)
+   
+  }
   return (
 	 <div>
-     <li key={item.id} className='list-group-item col-md-4 offset-md-4 d-flex justify-content-between align-items-center'>
+     <li  className='list-group-item col-md-4 offset-md-4 d-flex justify-content-between align-items-center'>
             {
-              edit? <input type='text' defaultValue={item.title}/> : <span>{item.title}</span>
+              edit? <input type='text' defaultValue={item.title}
+                onChange={(e)=> setModified(e.target.value)}
+              /> : <span>{item.title}</span>
             }
           
               <div>
-                <button className='btn btn-danger btn-sm mr-2' onClick={()=> setEdit(!edit)}>
+                <button className='btn btn-danger btn-sm mr-2' onClick={()=>edit?handleSave():setEdit(true) }>
                  {
                   edit? <FontAwesomeIcon icon={faSave} />: <FontAwesomeIcon icon={faEdit} />
                  }
